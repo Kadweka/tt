@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<menuitem
+        id="menu_home_bank_management_module"
+        name="QAAS"
+        web_icon="ooh_home_banking,static/icon.png"
+        groups="ooh_home_banking.banking_manager_admin"/>
+<menuitem
+        id="view_home_account"
+        name="QAAS"
+        parent="menu_home_bank_management_module"
+        action="ooh_home_banking.action_view_home_bank"
+        sequence="2"/>
+</odoo>

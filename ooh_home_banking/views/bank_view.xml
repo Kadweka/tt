@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.act_window" id="action_view_home_bank">
+            <field name="name">Account Management</field>
+            <field name="res_model">home.bank</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+<!--                <field name="domain">[('state','in',['active','processing'])]</field>-->
+                <p class="oe_view_nocontent_create">Create new Account
+                </p>
+            </field>
+        </record>
+
+        <record id="view_home_bank_tree" model="ir.ui.view">
+            <field name="name">home.bank.tree</field>
+            <field name="model">home.bank</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Account">
+                    <field name="name" />
+                    <field name="customer_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_home_bank_form" model="ir.ui.view">
+            <field name="name">home.bank.tree</field>
+            <field name="model">home.bank</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Account Information">
+                    <header>
+                    <button name="action_post_transaction" class="oe_highlight" string="New Transaction" type="object" states="active"/>
+                    <button name="action_activate" class="oe_highlight" string="Activate Account" type="object" states="processing"/>
+                    <button name="action_deactivate" class="oe_highlight" string="Close Account" type="object" states="active"/>
+                    <button name="action_reactivate" class="oe_highlight" string="Reactivate Account" type="object" states="inactive"/>
+                    <field name="state" widget="statusbar" readonly="1"
+                    options="{'clickable': '0'}" />
+                    <!-- <field name="state" widget="statusbar" statusbar_visible="PROCESSING,INACTIVE,ACTIVE"/> -->
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="active"
+                        attrs="{'invisible':[('state','!=','active')]}"
+                        />
+                        <widget name="web_ribbon" title="inactive"
+                        attrs="{'invisible':[('state','!=','inactive')]}"
+                        bg_color="bg-danger" 
+                        />
+                        <widget name="web_ribbon" title="processing"
+                        attrs="{'invisible':[('state','!=','processing')]}"
+                        bg_color="bg-orange" 
+                        />
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="customer_id" attrs="{'readonly':[('state','=','active')]}"/>
+                                <field name="income_journal_id" attrs="{'readonly':[('state','=','active')]}" domain="[('type', '=','purchase')]"/>
+                            </group>
+                            <group>
+                                <field name="currency_id" attrs="{'readonly':[('state','=','active')]}"/>
+                                <field name="date" attrs="{'readonly':[('state','=','active')]}"/>
+                                <field name="outcome_journal_id" attrs="{'readonly':[('state','=','active')]}" domain="[('type', '=','sale')]"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Transaction Lines">
+                                <field name="move_line_ids" options="{'limit':100, 'create': false, 'create_edit': false}">
+                                    <tree string="Transaction" editable="bottom">
+                                    <field name="name"/>
+                                    <field  name="date"/>
+                                    <field  name="credit" widget='monetary'/>
+                                    <field  name="debit" widget='monetary'/>
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="account_total">
+                                        <field name="account_total" widget='monetary'/>
+                                </group>
+                                <div class="oe_clear"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" />
+                        <field name="activity_ids" />
+                        <field name="message_ids" />
+                    </div>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

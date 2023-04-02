@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <record id="adding_home_banking_journal" model="account.journal">
+        <field name="name">Home Banking</field>
+        <field name="type">purchase</field>
+        <field name="code">HMBNK</field>
+      </record>
+    </data>
+</odoo>
